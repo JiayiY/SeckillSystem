@@ -1,4 +1,4 @@
-package utils;
+package shiro;
 
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import java.io.IOException;
  * @ClassName JWTFilter
  * @Description TODO
  * @Author yjy
- * @Date 2020/5/5 22:56
+ * @Date 2020/5/6 22:15
  * @Vertion 1.0
  **/
 public class JWTFilter  extends BasicHttpAuthenticationFilter {

@@ -1,24 +1,23 @@
-package utils;
+package util;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.auth0.jwt.interfaces.JWTVerifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 /**
- * @ClassName JwtUtil
+ * @ClassName JWTUtil
  * @Description TODO
  * @Author yjy
- * @Date 2020/5/5 22:39
+ * @Date 2020/5/6 22:11
  * @Vertion 1.0
  **/
 public class JWTUtil {
+
     // 过期时间5分钟
     private static final long EXPIRE_TIME = 5*60*1000;
 
@@ -69,9 +68,8 @@ public class JWTUtil {
                     .withClaim("username", username)
                     .withExpiresAt(date)
                     .sign(algorithm);
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
             return null;
         }
     }
-
 }

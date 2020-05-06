@@ -1,4 +1,4 @@
-package utils;
+package shiro;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
@@ -6,7 +6,7 @@ import org.apache.shiro.authc.AuthenticationToken;
  * @ClassName JWTToken
  * @Description TODO
  * @Author yjy
- * @Date 2020/5/5 22:54
+ * @Date 2020/5/6 22:21
  * @Vertion 1.0
  **/
 public class JWTToken implements AuthenticationToken {

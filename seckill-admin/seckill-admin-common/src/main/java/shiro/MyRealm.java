@@ -1,8 +1,7 @@
-package utils;
+package shiro;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -10,17 +9,19 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import sun.net.www.protocol.http.AuthenticationInfo;
+import util.JWTUtil;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * @ClassName MyRealm
  * @Description TODO
  * @Author yjy
- * @Date 2020/5/5 22:52
+ * @Date 2020/5/6 22:21
  * @Vertion 1.0
  **/
 public class MyRealm extends AuthorizingRealm {
@@ -73,7 +74,7 @@ public class MyRealm extends AuthorizingRealm {
             throw new AuthenticationException("User didn't existed!");
         }
 
-        if (! JWTUtil.verify(token, username, userBean.getPassword())) {
+        if (!JWTUtil.verify(token, username, userBean.getPassword())) {
             throw new AuthenticationException("Username or password error");
         }
 
