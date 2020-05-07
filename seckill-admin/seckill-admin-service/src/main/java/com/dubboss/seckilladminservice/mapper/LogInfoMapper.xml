@@ -19,18 +19,18 @@
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from
-		logininfo
+		sk_user
 		where id = #{id,jdbcType=BIGINT}
 	</delete>
 
     <insert id="insert" keyProperty="id" parameterType="entity.LogInfo" useGeneratedKeys="true">
-		insert into logininfo (nickname,password, state,usertype,admin,salt,registerdate,lastlogindate)
+		insert into sk_user (nickname,password, state,usertype,admin,salt,registerdate,lastlogindate)
 		values	(#{nickname,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{state,jdbcType=TINYINT},#{userType},#{admin}
 		,#{salt},#{registerDate},#{lastLoginDate})
 	</insert>
 
     <update id="updateByPrimaryKey" parameterType="entity.LogInfo">
-		update logininfo set nickname = #{nickname,jdbcType=VARCHAR},password =#{password,jdbcType=VARCHAR},
+		update sk_user set nickname = #{nickname,jdbcType=VARCHAR},password =#{password,jdbcType=VARCHAR},
 			state = #{state,jdbcType=TINYINT},usertype = #{userType},admin=#{admin},salt = #{salt},
 			registerdate = #{registerDate},lastlogindate = #{lastLoginDate}
 		where id = #{id,jdbcType=BIGINT}
@@ -43,35 +43,35 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap" useCache="true">
         select
         <include refid="base_column"/>
-        from logininfo where id = #{id,jdbcType=BIGINT}
+        from sk_user where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" useCache="false">
         select
         <include refid="base_column"/>
-        from logininfo
+        from sk_user
     </select>
 
     <select id="getCountByNickname" resultType="int" useCache="false">
-		select count(id) from logininfo where nickname=#{nickname} and usertype = #{userType}
+		select count(id) from sk_user where nickname=#{nickname} and usertype = #{userType}
 	</select>
 
 
     <select id="getLoginInfoByNickname" resultMap="BaseResultMap" useCache="false">
         select
         <include refid="base_column"/>
-        from logininfo where nickname=#{nickname} and usertype = #{userType}
+        from sk_user where nickname=#{nickname} and usertype = #{userType}
     </select>
 
 
     <select id="login" resultMap="BaseResultMap" useCache="true">
         select
         <include refid="base_column"/>
-        from logininfo where nickname= #{name} and password=#{password} and usertype=#{userType}
+        from sk_user where nickname= #{name} and password=#{password} and usertype=#{userType}
     </select>
 
     <select id="autoComplate" resultType="hashmap" useCache="false">
 		select id,nickname as name
-		from logininfo where nickname LIKE concat(#{word},'%') AND usertype = #{userType}
+		from sk_user where nickname LIKE concat(#{word},'%') AND usertype = #{userType}
 	</select>
 </mapper>

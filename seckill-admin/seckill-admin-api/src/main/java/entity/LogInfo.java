@@ -1,6 +1,7 @@
 package entity;
 
-import com.dubboss.seckilladmincommon.enums.Constants;
+
+import enums.Constants;
 
 import java.util.Date;
 
@@ -12,15 +13,23 @@ import java.util.Date;
  * @Vertion 1.0
  **/
 public class LogInfo {
+
     private Long id;
+
     private String nickname;
+
     private String password;
+
     private String salt;
+
     private Date registerDate;
+
     private Date lastLoginDate;
+
     private int state = Constants.STATE_NORMAL;
     //用户类型
     private int userType;
+
     private boolean admin = false;
 
     public Long getId() {

@@ -21,7 +21,7 @@ import java.io.IOException;
  **/
 public class JWTFilter  extends BasicHttpAuthenticationFilter {
 
-    private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private Logger lOGGER = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 判断用户是否想要登入。
@@ -96,7 +96,7 @@ public class JWTFilter  extends BasicHttpAuthenticationFilter {
             HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
             httpServletResponse.sendRedirect("/401");
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
+            lOGGER.error(e.getMessage());
         }
     }
 }
