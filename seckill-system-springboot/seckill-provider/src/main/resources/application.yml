@@ -1,0 +1,24 @@
+dubbo:
+  application:
+    name: seckill-provider
+  protocol:
+    name: dubbo
+    port: 20880
+  scan:
+    base-packages: com.dubboss.seckillprovider.mp
+  registry:
+    address: zookeeper://localhost:2181
+    protocol: zookeeper
+  provider:
+    timeout: 30000
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_seckill?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 1021
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  type-aliases-package: com.dubboss.seckillapi.entity
+  mapper-locations: classpath:mapper/*.xml

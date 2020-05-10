@@ -1,0 +1,15 @@
+#∂Àø⁄∫≈≈‰÷√
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_seckill?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 1021
+    driver-class-name: com.mysql.jdbc.Driver
+
+#mybatis≈‰÷√
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.dubboss.seckillapi.entity
