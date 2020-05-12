@@ -1,15 +1,16 @@
 package com.dubboss.seckillconsumer.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.dubboss.seckillapi.entity.SkUser;
+import com.dubboss.seckillapi.enums.ResultSk;
 import com.dubboss.seckillapi.service.UserService;
+import com.dubboss.seckillapi.vo.LoginVo;
 import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 /**
  * @ClassName LoginController
@@ -21,24 +22,22 @@ import java.sql.Date;
 @RestController
 public class LoginController {
 
+    Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @Reference
     private UserService userService;
 
-    @PostMapping("register")
-    public String register(SkUser skUser) {
-        if (userService.register(skUser)) {
-            return skUser.toString();
-        }
-        return "false";
-    }
+/*    @GetMapping("to_login")
+    public String toLogin() {
 
-    public static void main(String[] args) {
-        SkUser skUser = new SkUser();
-        skUser.setCreateTime(new Date(2020,5,10));
-        skUser.setUsername("admin");
-        skUser.setPassword("1021");
-        System.out.println(JSON.toJSON(skUser));
+    }*/
 
+    @PostMapping
+    public ResultSk<String> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {
+        ResultSk<String> result = ResultSk.build();
+        logger.info(loginVo.toString());
+        userService.login(response, loginVo);
+        return result;
     }
 
 }

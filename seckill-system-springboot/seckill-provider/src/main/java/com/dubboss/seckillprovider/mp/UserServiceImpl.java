@@ -2,9 +2,16 @@ package com.dubboss.seckillprovider.mp;
 
 import com.dubboss.seckillapi.dao.SkUserMapper;
 import com.dubboss.seckillapi.entity.SkUser;
+import com.dubboss.seckillapi.exception.GlobalException;
 import com.dubboss.seckillapi.service.UserService;
+import com.dubboss.seckillapi.vo.LoginVo;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletResponse;
+
+import static com.dubboss.seckillapi.enums.ResultStatus.MOBILE_NOT_EXIST;
+import static com.dubboss.seckillapi.enums.ResultStatus.SYSTEM_ERROR;
 
 /**
  * @ClassName UserServiceImpl
@@ -20,13 +27,11 @@ public class UserServiceImpl implements UserService {
     private SkUserMapper skUserMapper;
 
     @Override
-    public boolean register(SkUser skUser) {
-        return skUserMapper.insert(skUser) == 1;
-    }
-
-    @Override
-    public SkUser findByUsername(String username) {
-        SkUser skUser = skUserMapper.selectByUsername(username);
-        return skUser;
+    public boolean login(HttpServletResponse response, LoginVo loginVo) {
+        if (loginVo == null) {
+            //交给异常处理器处理
+            throw new GlobalException(SYSTEM_ERROR);
+        }
+        return true;
     }
 }

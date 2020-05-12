@@ -1,6 +1,9 @@
 package com.dubboss.seckillapi.service;
 
 import com.dubboss.seckillapi.entity.SkUser;
+import com.dubboss.seckillapi.vo.LoginVo;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @ClassName UserService
@@ -12,20 +15,12 @@ import com.dubboss.seckillapi.entity.SkUser;
 public interface UserService {
 
     /**
-     * @param skUser
-     * @return void
+     * @param response
+     * @param loginVo
+     * @return boolean
      * @Author yangjiayi
-     * @Description //注册用户
-     * @Date 17:13 2020/5/10
+     * @Description //
+     * @Date 23:16 2020/5/12
      */
-    boolean register(SkUser skUser);
-
-    /**
-     * @param username
-     * @return com.dubboss.seckillapi.entity.SkUser
-     * @Author yangjiayi
-     * @Description //获取用户信息
-     * @Date 17:12 2020/5/10
-     */
-    SkUser findByUsername(String username);
+    boolean login(HttpServletResponse response, LoginVo loginVo);
 }

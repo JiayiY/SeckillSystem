@@ -4,16 +4,13 @@ import com.dubboss.seckillapi.entity.SkUser;
 import java.util.List;
 
 public interface SkUserMapper {
-
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(SkUser record);
 
-    SkUser selectByPrimaryKey(Integer id);
+    SkUser selectByPrimaryKey(Long id);
 
     List<SkUser> selectAll();
 
     int updateByPrimaryKey(SkUser record);
-
-    SkUser selectByUsername(String username);
 }

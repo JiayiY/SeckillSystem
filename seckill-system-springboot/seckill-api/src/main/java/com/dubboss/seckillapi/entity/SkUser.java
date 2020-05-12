@@ -4,32 +4,38 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SkUser implements Serializable {
-    private Integer id;
+    private Long id;
 
-    private String username;
+    private String nickname;
 
     private String password;
 
-    private Date createTime;
+    private String salt;
 
-    private Date updateTime;
+    private String head;
+
+    private Date registerDate;
+
+    private Date lastLoginDate;
+
+    private Integer loginCount;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
     }
 
     public String getPassword() {
@@ -40,20 +46,44 @@ public class SkUser implements Serializable {
         this.password = password == null ? null : password.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setSalt(String salt) {
+        this.salt = salt == null ? null : salt.trim();
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getHead() {
+        return head;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setHead(String head) {
+        this.head = head == null ? null : head.trim();
+    }
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
+
+    public Integer getLoginCount() {
+        return loginCount;
+    }
+
+    public void setLoginCount(Integer loginCount) {
+        this.loginCount = loginCount;
     }
 
     @Override
@@ -63,10 +93,13 @@ public class SkUser implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", username=").append(username);
+        sb.append(", nickname=").append(nickname);
         sb.append(", password=").append(password);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
+        sb.append(", salt=").append(salt);
+        sb.append(", head=").append(head);
+        sb.append(", registerDate=").append(registerDate);
+        sb.append(", lastLoginDate=").append(lastLoginDate);
+        sb.append(", loginCount=").append(loginCount);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

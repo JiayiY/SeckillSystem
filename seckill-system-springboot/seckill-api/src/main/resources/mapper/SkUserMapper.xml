@@ -1,39 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dubboss.seckillapi.dao.SkUserMapper">
-    <resultMap id="BaseResultMap" type="com.dubboss.seckillapi.entity.SkUser">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="password" jdbcType="VARCHAR" property="password"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    </resultMap>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <resultMap id="BaseResultMap" type="com.dubboss.seckillapi.entity.SkUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="head" jdbcType="VARCHAR" property="head" />
+    <result column="register_date" jdbcType="TIMESTAMP" property="registerDate" />
+    <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate" />
+    <result column="login_count" jdbcType="INTEGER" property="loginCount" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sk_user
-    where id = #{id,jdbcType=INTEGER}
-    </delete>
-    <insert id="insert" parameterType="com.dubboss.seckillapi.entity.SkUser">
-    insert into sk_user (id, username, `password`, create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
-    </insert>
-    <update id="updateByPrimaryKey" parameterType="com.dubboss.seckillapi.entity.SkUser">
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dubboss.seckillapi.entity.SkUser">
+    insert into sk_user (id, nickname, `password`, 
+      salt, head, register_date, 
+      last_login_date, login_count)
+    values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{head,jdbcType=VARCHAR}, #{registerDate,jdbcType=TIMESTAMP}, 
+      #{lastLoginDate,jdbcType=TIMESTAMP}, #{loginCount,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.dubboss.seckillapi.entity.SkUser">
     update sk_user
-    set username = #{username,jdbcType=VARCHAR},
+    set nickname = #{nickname,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-    </update>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, username, `password`, create_time, update_time
-    from sk_user where id = #{id,jdbcType=INTEGER}
-    </select>
-    <select id="selectAll" resultMap="BaseResultMap">
-    select id, username, `password`, create_time, update_time from sk_user
-    </select>
-    <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, username, `password`, create_time, update_time
-    from sk_user where username = #{username,jdbcType=VARCHAR}
-    </select>
+      salt = #{salt,jdbcType=VARCHAR},
+      head = #{head,jdbcType=VARCHAR},
+      register_date = #{registerDate,jdbcType=TIMESTAMP},
+      last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP},
+      login_count = #{loginCount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count
+    from sk_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count
+    from sk_user
+  </select>
 </mapper>
