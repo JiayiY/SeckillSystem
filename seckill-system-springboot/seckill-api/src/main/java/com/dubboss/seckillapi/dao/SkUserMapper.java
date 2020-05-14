@@ -13,4 +13,7 @@ public interface SkUserMapper {
     List<SkUser> selectAll();
 
     int updateByPrimaryKey(SkUser record);
+
+    SkUser selectByMobile(Long mobile);
+
 }

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SkUser implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private Long id;
 
     private String nickname;
@@ -20,7 +23,7 @@ public class SkUser implements Serializable {
 
     private Integer loginCount;
 
-    private static final long serialVersionUID = 1L;
+    private Long mobile;
 
     public Long getId() {
         return id;
@@ -84,6 +87,14 @@ public class SkUser implements Serializable {
 
     public void setLoginCount(Integer loginCount) {
         this.loginCount = loginCount;
+    }
+
+    public Long getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(Long mobile) {
+        this.mobile = mobile;
     }
 
     @Override

@@ -10,6 +10,7 @@
     <result column="register_date" jdbcType="TIMESTAMP" property="registerDate" />
     <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate" />
     <result column="login_count" jdbcType="INTEGER" property="loginCount" />
+    <result column="mobile" jdbcType="BIGINT" property="mobile" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sk_user
@@ -42,5 +43,10 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select id, nickname, `password`, salt, head, register_date, last_login_date, login_count
     from sk_user
+  </select>
+  <select id="selectByMobile" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count, mobile
+    from sk_user
+    where mobile = #{mobile,jdbcType=BIGINT}
   </select>
 </mapper>

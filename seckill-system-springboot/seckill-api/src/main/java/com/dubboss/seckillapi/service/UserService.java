@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
  **/
 public interface UserService {
 
+    static final String COOKIE_NAME_TOKEN = "token";
+
     /**
      * @param response
      * @param loginVo
@@ -23,4 +25,6 @@ public interface UserService {
      * @Date 23:16 2020/5/12
      */
     boolean login(HttpServletResponse response, LoginVo loginVo);
+
+    SkUser getByToken(String token);
 }
