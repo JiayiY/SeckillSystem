@@ -26,5 +26,5 @@ public interface UserService {
      */
     boolean login(HttpServletResponse response, LoginVo loginVo);
 
-    SkUser getByToken(String token);
+    SkUser getByToken(HttpServletResponse response,String token);
 }

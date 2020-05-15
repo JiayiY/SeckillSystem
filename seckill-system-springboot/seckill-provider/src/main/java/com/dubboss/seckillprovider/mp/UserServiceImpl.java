@@ -46,7 +46,32 @@ public class UserServiceImpl implements UserService {
         if (!skUser.getPassword().equals(MD5Util.formPwdToDBPwd(loginVo.getPassword(), skUser.getSalt()))) {
             throw new GlobalException(PASSWORD_ERROR);
         }
-        // 生成cookie
+        addCookie(response, skUser);
+        return true;
+    }
+
+    @Override
+    public SkUser getByToken(HttpServletResponse response, String token) {
+        if (StringUtils.isEmpty(token)) {
+            return null;
+        }
+        SkUser skUser = redisService.get(SkUserKey.token, token, SkUser.class);
+        // 延长有效期
+        if (skUser != null) {
+            addCookie(response, skUser);
+        }
+        return skUser;
+    }
+
+    /**
+     * @param response
+     * @param skUser
+     * @return void
+     * @Author yangjiayi
+     * @Description // 生成cookie
+     * @Date 23:31 2020/5/15
+     */
+    private void addCookie(HttpServletResponse response, SkUser skUser) {
         String token = UUIDUtil.generateUuid();
         redisService.set(SkUserKey.token, token, skUser);
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
@@ -54,15 +79,5 @@ public class UserServiceImpl implements UserService {
         cookie.setMaxAge(SkUserKey.token.expireSeconds());
         cookie.setPath("/");
         response.addCookie(cookie);
-        return true;
-    }
-
-    @Override
-    public SkUser getByToken(String token) {
-        if(StringUtils.isEmpty(token)){
-            return null;
-        }
-        SkUser skUser = redisService.get(SkUserKey.token, token, SkUser.class);
-        return skUser;
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @ClassName GoodsController
  * @Description TODO
@@ -23,17 +25,23 @@ public class GoodsController {
     @Reference
     private UserService userService;
 
-    @GetMapping("to_list")
-    public String list(Model model,
+/*    @GetMapping("to_list")
+    public String list(HttpServletResponse response, Model model,
                        @CookieValue(value = UserService.COOKIE_NAME_TOKEN, required = false) String cookieToken,
                        @RequestParam(value = UserService.COOKIE_NAME_TOKEN, required = false) String paramToken) {
-        if(StringUtils.isEmpty(cookieToken)&&StringUtils.isEmpty(paramToken)){
+        if (StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
             return "to_login";
         }
         // 优先取 paramcookie
-        String token = StringUtils.isEmpty(paramToken)?cookieToken:paramToken;
-        SkUser skUser = userService.getByToken(token);
-        model.addAttribute("skuser",skUser);
+        String token = StringUtils.isEmpty(paramToken) ? cookieToken : paramToken;
+        SkUser skUser = userService.getByToken(response, token);
+        model.addAttribute("skuser", skUser);
+        return "good_list";
+    }*/
+
+    @GetMapping("to_list")
+    public String list(Model model, SkUser skUser) {
+        model.addAttribute("skuser", skUser);
         return "good_list";
     }
 
