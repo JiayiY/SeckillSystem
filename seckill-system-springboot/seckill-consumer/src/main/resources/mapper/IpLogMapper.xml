@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dubboss.sk.dao.IpLogMapper">
+    <resultMap id="BaseResultMap" type="com.dubboss.sk.entity.IpLog">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="loginState" jdbcType="TINYINT" property="loginstate"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="loginInfoId" jdbcType="BIGINT" property="logininfoid"/>
+        <result column="loginType" jdbcType="TINYINT" property="logintype"/>
+        <result column="loginTime" jdbcType="TIMESTAMP" property="logintime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from ip_log
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.dubboss.sk.entity.IpLog">
+        insert into ip_log (id, ip, loginState,
+                            username, loginInfoId, loginType,
+                            loginTime)
+        values (#{id,jdbcType=BIGINT}, #{ip,jdbcType=VARCHAR}, #{loginstate,jdbcType=TINYINT},
+                #{username,jdbcType=VARCHAR}, #{logininfoid,jdbcType=BIGINT}, #{logintype,jdbcType=TINYINT},
+                #{logintime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.dubboss.sk.entity.IpLog">
+        update ip_log
+        set ip          = #{ip,jdbcType=VARCHAR},
+            loginState  = #{loginstate,jdbcType=TINYINT},
+            username    = #{username,jdbcType=VARCHAR},
+            loginInfoId = #{logininfoid,jdbcType=BIGINT},
+            loginType   = #{logintype,jdbcType=TINYINT},
+            loginTime   = #{logintime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, ip, loginState, username, loginInfoId, loginType, loginTime
+        from ip_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, ip, loginState, username, loginInfoId, loginType, loginTime
+        from ip_log
+    </select>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dubboss.sk.dao.SkGoodsMapper">
+    <resultMap id="BaseResultMap" type="com.dubboss.sk.entity.SkGoods">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
+        <result column="miaosha_price" jdbcType="DECIMAL" property="miaoshaPrice"/>
+        <result column="stock_count" jdbcType="INTEGER" property="stockCount"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from sk_goods
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.dubboss.sk.entity.SkGoods">
+        insert into sk_goods (id, goods_id, miaosha_price,
+                              stock_count, start_date, end_date)
+        values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{miaoshaPrice,jdbcType=DECIMAL},
+                #{stockCount,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.dubboss.sk.entity.SkGoods">
+        update sk_goods
+        set goods_id      = #{goodsId,jdbcType=BIGINT},
+            miaosha_price = #{miaoshaPrice,jdbcType=DECIMAL},
+            stock_count   = #{stockCount,jdbcType=INTEGER},
+            start_date    = #{startDate,jdbcType=TIMESTAMP},
+            end_date      = #{endDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, goods_id, miaosha_price, stock_count, start_date, end_date
+        from sk_goods
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, goods_id, miaosha_price, stock_count, start_date, end_date
+        from sk_goods
+    </select>
+
+    <update id="reduceStock" parameterType="com.dubboss.sk.entity.SkGoods">
+        update sk_goods
+        set stock_count = stock_count - 1
+        where goods_id = #{goodsId,jdbcType=BIGINT}
+    </update>
+</mapper>

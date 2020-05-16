@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dubboss.sk.dao.GoodsMapper">
+    <resultMap id="BaseResultMap" type="com.dubboss.sk.entity.Goods">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle"/>
+        <result column="goods_img" jdbcType="VARCHAR" property="goodsImg"/>
+        <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice"/>
+        <result column="goods_stock" jdbcType="INTEGER" property="goodsStock"/>
+        <result column="goods_detail" jdbcType="LONGVARCHAR" property="goodsDetail"/>
+    </resultMap>
+
+    <resultMap id="GoodsVotMap" type="com.dubboss.sk.vo.GoodsVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle"/>
+        <result column="goods_img" jdbcType="VARCHAR" property="goodsImg"/>
+        <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice"/>
+        <result column="goods_stock" jdbcType="INTEGER" property="goodsStock"/>
+        <result column="goods_detail" jdbcType="LONGVARCHAR" property="goodsDetail"/>
+        <result column="miaosha_price" jdbcType="DECIMAL" property="miaoshaPrice"/>
+        <result column="stock_count" jdbcType="INTEGER" property="stockCount"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from goods
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.dubboss.sk.entity.Goods">
+        insert into goods (id, goods_name, goods_title,
+                           goods_img, goods_price, goods_stock,
+                           goods_detail)
+        values (#{id,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, #{goodsTitle,jdbcType=VARCHAR},
+                #{goodsImg,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, #{goodsStock,jdbcType=INTEGER},
+                #{goodsDetail,jdbcType=LONGVARCHAR})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.dubboss.sk.entity.Goods">
+        update goods
+        set goods_name   = #{goodsName,jdbcType=VARCHAR},
+            goods_title  = #{goodsTitle,jdbcType=VARCHAR},
+            goods_img    = #{goodsImg,jdbcType=VARCHAR},
+            goods_price  = #{goodsPrice,jdbcType=DECIMAL},
+            goods_stock  = #{goodsStock,jdbcType=INTEGER},
+            goods_detail = #{goodsDetail,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, goods_name, goods_title, goods_img, goods_price, goods_stock, goods_detail
+        from goods
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, goods_name, goods_title, goods_img, goods_price, goods_stock, goods_detail
+        from goods
+    </select>
+
+    <select id="selectAllSkGoods" resultMap="GoodsVotMap">
+        select g.id,
+               goods_name,
+               goods_title,
+               goods_img,
+               goods_price,
+               goods_stock,
+               goods_detail,
+               miaosha_price,
+               stock_count,
+               start_date,
+               end_date
+        from sk_goods skg
+                 left join goods g on skg.goods_id = g.id
+    </select>
+
+    <select id="selectGoodsVoByGoodsId" parameterType="java.lang.Long" resultMap="GoodsVotMap">
+        select g.id,
+               goods_name,
+               goods_title,
+               goods_img,
+               goods_price,
+               goods_stock,
+               goods_detail,
+               miaosha_price,
+               stock_count,
+               start_date,
+               end_date
+        from sk_goods skg
+                 left join goods g on skg.goods_id = g.id
+        where g.id = #{goodsId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

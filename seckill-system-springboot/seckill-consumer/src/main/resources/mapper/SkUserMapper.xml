@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dubboss.sk.dao.SkUserMapper">
+    <resultMap id="BaseResultMap" type="com.dubboss.sk.entity.SkUser">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="head" jdbcType="VARCHAR" property="head"/>
+        <result column="register_date" jdbcType="TIMESTAMP" property="registerDate"/>
+        <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate"/>
+        <result column="login_count" jdbcType="INTEGER" property="loginCount"/>
+        <result column="mobile" jdbcType="BIGINT" property="mobile"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sk_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.dubboss.sk.entity.SkUser">
+    insert into sk_user (id, nickname, `password`, 
+      salt, head, register_date, 
+      last_login_date, login_count)
+    values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{head,jdbcType=VARCHAR}, #{registerDate,jdbcType=TIMESTAMP}, 
+      #{lastLoginDate,jdbcType=TIMESTAMP}, #{loginCount,jdbcType=INTEGER})
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="com.dubboss.sk.entity.SkUser">
+    update sk_user
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      head = #{head,jdbcType=VARCHAR},
+      register_date = #{registerDate,jdbcType=TIMESTAMP},
+      last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP},
+      login_count = #{loginCount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count
+    from sk_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count
+    from sk_user
+  </select>
+    <select id="selectByMobile" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count, mobile
+    from sk_user
+    where mobile = #{mobile,jdbcType=BIGINT}
+  </select>
+</mapper>
