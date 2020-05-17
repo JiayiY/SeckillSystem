@@ -36,6 +36,8 @@ spring:
     add-mappings: true
     chain:
       html-application-cache: true
+      cache: true
+      enabled: true
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

@@ -3,6 +3,8 @@ package com.dubboss.sk.controller;
 import com.dubboss.sk.entity.OrderInfo;
 import com.dubboss.sk.entity.SkOrder;
 import com.dubboss.sk.entity.SkUser;
+import com.dubboss.sk.enums.ResultSk;
+import com.dubboss.sk.enums.ResultStatus;
 import com.dubboss.sk.service.GoodsService;
 import com.dubboss.sk.service.OrderService;
 import com.dubboss.sk.service.SkService;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @ClassName SkController
@@ -40,31 +43,33 @@ public class SkController {
     @Autowired
     SkService skService;
 
-    @RequestMapping(value = "/{path}/do_miaosha")
-    public String miaosha(Model model, SkUser skUser, @RequestParam("goodsId") long goodsId) {
+    @RequestMapping(value = "/do_miaosha")
+    @ResponseBody
+    public ResultSk<OrderInfo> miaosha(Model model, SkUser skUser, @RequestParam("goodsId") long goodsId) {
+        ResultSk<OrderInfo> result = ResultSk.build();
         model.addAttribute("user", skUser);
         if (skUser == null) {
-            return "login";
+            result.withError(ResultStatus.SESSION_ERROR.getCode(), ResultStatus.SESSION_ERROR.getMessage());
+            return result;
         }
         // 判断库存
         GoodsVo goodsVo = goodsService.getGoodsVoByGoodsId(goodsId);
         if(goodsVo.getStockCount()<=0){
-            model.addAttribute("errmsg","库存不足");
-            return "miaosha_fail";
+            result.withError(ResultStatus.EXCEPTION.getCode(), ResultStatus.MIAO_SHA_OVER.getMessage());
+            return result;
         }
 
         // 判断是否已经秒杀到了
         SkOrder skOrder = orderService.getSkOrderByUIdGId(skUser.getId(),goodsVo.getId());
         if(skOrder!=null){
-            model.addAttribute("errmsg","重复秒杀");
-            return "miaosha_fail";
+            result.withError(ResultStatus.EXCEPTION.getCode(), ResultStatus.REPEATE_MIAOSHA.getMessage());
+            return result;
         }
 
         // 秒杀 减库存，下订单，写入秒杀订单
         OrderInfo orderInfo = skService.sk(skUser,goodsVo);
-        model.addAttribute("orderInfo",orderInfo);
-        model.addAttribute("goods",goodsVo);
-        return "order_detail";
+        result.success(orderInfo);
+        return result;
     }
 
 }

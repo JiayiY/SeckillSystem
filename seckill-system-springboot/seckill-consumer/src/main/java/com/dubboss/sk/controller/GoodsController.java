@@ -1,8 +1,10 @@
 package com.dubboss.sk.controller;
 
 import com.dubboss.sk.entity.SkUser;
+import com.dubboss.sk.enums.ResultSk;
 import com.dubboss.sk.service.GoodsService;
 import com.dubboss.sk.service.UserService;
+import com.dubboss.sk.vo.GoodsDetailVo;
 import com.dubboss.sk.vo.GoodsVo;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Controller;
@@ -52,10 +54,11 @@ public class GoodsController {
     }
 
     @RequestMapping(value = "/detail/{goodsId}")
-    public String detail(Model model, SkUser skUser, @PathVariable("goodsId") long goodsId) {
+    @ResponseBody
+    public ResultSk<GoodsDetailVo> detail(SkUser skUser, @PathVariable("goodsId") long goodsId) {
         GoodsVo goodsVo = goodsService.getGoodsVoByGoodsId(goodsId);
-        model.addAttribute("user", skUser);
-        model.addAttribute("goods", goodsVo);
+        ResultSk<GoodsDetailVo> result = ResultSk.build();
+
         long startAt = goodsVo.getStartDate().getTime();
         long endAt = goodsVo.getEndDate().getTime();
         long now = System.currentTimeMillis();
@@ -71,10 +74,13 @@ public class GoodsController {
         } else {//秒杀进行中
             miaoshaStatus = 1;
         }
-        model.addAttribute("miaoshaStatus", miaoshaStatus);
-        model.addAttribute("remainSeconds", remainSeconds);
-        return "goodsdetail";
-
+        GoodsDetailVo vo = new GoodsDetailVo();
+        vo.setGoodsVo(goodsVo);
+        vo.setSkUser(skUser);
+        vo.setRemainSeconds(remainSeconds);
+        vo.setMiaoshaStatus(miaoshaStatus);
+        result.setData(vo);
+        return result;
     }
 
 }
