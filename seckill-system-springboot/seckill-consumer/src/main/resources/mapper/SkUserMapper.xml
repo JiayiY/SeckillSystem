@@ -13,40 +13,68 @@
         <result column="mobile" jdbcType="BIGINT" property="mobile"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from sk_user
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete
+        from sk_user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.dubboss.sk.entity.SkUser">
-    insert into sk_user (id, nickname, `password`, 
-      salt, head, register_date, 
-      last_login_date, login_count)
-    values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{salt,jdbcType=VARCHAR}, #{head,jdbcType=VARCHAR}, #{registerDate,jdbcType=TIMESTAMP}, 
-      #{lastLoginDate,jdbcType=TIMESTAMP}, #{loginCount,jdbcType=INTEGER})
-  </insert>
+        insert into sk_user (id, nickname, `password`,
+                             salt, head, register_date,
+                             last_login_date, login_count)
+        values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+                #{salt,jdbcType=VARCHAR}, #{head,jdbcType=VARCHAR}, #{registerDate,jdbcType=TIMESTAMP},
+                #{lastLoginDate,jdbcType=TIMESTAMP}, #{loginCount,jdbcType=INTEGER})
+    </insert>
     <update id="updateByPrimaryKey" parameterType="com.dubboss.sk.entity.SkUser">
-    update sk_user
-    set nickname = #{nickname,jdbcType=VARCHAR},
-      `password` = #{password,jdbcType=VARCHAR},
-      salt = #{salt,jdbcType=VARCHAR},
-      head = #{head,jdbcType=VARCHAR},
-      register_date = #{registerDate,jdbcType=TIMESTAMP},
-      last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP},
-      login_count = #{loginCount,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        update sk_user
+        set nickname        = #{nickname,jdbcType=VARCHAR},
+            `password`      = #{password,jdbcType=VARCHAR},
+            salt            = #{salt,jdbcType=VARCHAR},
+            head            = #{head,jdbcType=VARCHAR},
+            register_date   = #{registerDate,jdbcType=TIMESTAMP},
+            last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP},
+            login_count     = #{loginCount,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count
-    from sk_user
-    where id = #{id,jdbcType=BIGINT}
-  </select>
+        select id,
+               nickname,
+               `password`,
+               salt,
+               head,
+               register_date,
+               last_login_date,
+               login_count
+        from sk_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
     <select id="selectAll" resultMap="BaseResultMap">
-    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count
-    from sk_user
-  </select>
+        select id,
+               nickname,
+               `password`,
+               salt,
+               head,
+               register_date,
+               last_login_date,
+               login_count
+        from sk_user
+    </select>
     <select id="selectByMobile" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, nickname, `password`, salt, head, register_date, last_login_date, login_count, mobile
-    from sk_user
-    where mobile = #{mobile,jdbcType=BIGINT}
-  </select>
+        select id,
+               nickname,
+               `password`,
+               salt,
+               head,
+               register_date,
+               last_login_date,
+               login_count,
+               mobile
+        from sk_user
+        where mobile = #{mobile,jdbcType=BIGINT}
+    </select>
+    <update id="updatePwd" parameterType="com.dubboss.sk.entity.SkUser">
+        update sk_user
+        set `password` = #{password,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

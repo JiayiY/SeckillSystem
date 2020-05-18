@@ -19,4 +19,6 @@ public interface SkUserMapper {
 
     SkUser selectByMobile(Long mobile);
 
+    void updatePwd(SkUser skUser);
+
 }

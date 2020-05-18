@@ -10,6 +10,7 @@ import com.dubboss.sk.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,10 +23,10 @@ import java.util.List;
 @Service
 public class GoodsServiceImpl implements GoodsService {
 
-    @Autowired
+    @Resource
     private SkGoodsMapper skGoodsMapper;
 
-    @Autowired
+    @Resource
     private GoodsMapper goodsMapper;
 
     @Override

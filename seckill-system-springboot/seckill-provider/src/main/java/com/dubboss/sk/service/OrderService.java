@@ -16,4 +16,6 @@ public interface OrderService {
     SkOrder getSkOrderByUIdGId(Long UId, Long GId);
 
     OrderInfo createOrder(SkUser skUser, GoodsVo goodsVo);
+
+    OrderInfo getOrderById(long orderId);
 }

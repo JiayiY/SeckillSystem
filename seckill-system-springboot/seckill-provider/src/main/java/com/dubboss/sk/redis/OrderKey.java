@@ -8,7 +8,8 @@ package com.dubboss.sk.redis;
  * @Vertion 1.0
  **/
 public class OrderKey extends BasePrefix{
-    public OrderKey(int expireSeconds, String prefix) {
-        super(expireSeconds, prefix);
+    public OrderKey( String prefix) {
+        super( prefix);
     }
+    public static OrderKey getSkOrderByUidGid = new OrderKey("skougid");
 }

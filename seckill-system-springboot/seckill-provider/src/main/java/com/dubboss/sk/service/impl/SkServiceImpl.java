@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  **/
 @Service
 public class SkServiceImpl implements SkService {
+
     @Autowired
     private GoodsService goodsService;
 

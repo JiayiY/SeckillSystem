@@ -43,5 +43,6 @@
         update sk_goods
         set stock_count = stock_count - 1
         where goods_id = #{goodsId,jdbcType=BIGINT}
+          and stock_count > 0
     </update>
 </mapper>

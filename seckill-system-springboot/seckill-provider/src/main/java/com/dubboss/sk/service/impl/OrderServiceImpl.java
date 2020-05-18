@@ -5,6 +5,7 @@ import com.dubboss.sk.dao.SkOrderMapper;
 import com.dubboss.sk.entity.OrderInfo;
 import com.dubboss.sk.entity.SkOrder;
 import com.dubboss.sk.entity.SkUser;
+import com.dubboss.sk.redis.OrderKey;
 import com.dubboss.sk.service.OrderService;
 import com.dubboss.sk.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,16 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     OrderInfoMapper orderInfoMapper;
 
+    @Resource
+    RedisService redisService;
+
     @Override
     public SkOrder getSkOrderByUIdGId(Long UId, Long GId) {
-        return skOrderMapper.getSkOrderByUIdGId(UId, GId);
+        //return skOrderMapper.getSkOrderByUIdGId(UId, GId);
+       return redisService.get(OrderKey.getSkOrderByUidGid,""+UId+GId,SkOrder.class);
+
     }
+
 
     @Transactional
     @Override
@@ -52,6 +59,12 @@ public class OrderServiceImpl implements OrderService {
         skOrder.setOrderId(orderId);
         skOrder.setUserId(skUser.getId());
         skOrderMapper.insert(skOrder);
+        redisService.set(OrderKey.getSkOrderByUidGid,""+skUser.getId()+goodsVo.getId(),skOrder);
         return orderInfo;
+    }
+
+    @Override
+    public OrderInfo getOrderById(long orderId) {
+        return orderInfoMapper.selectByPrimaryKey(orderId);
     }
 }

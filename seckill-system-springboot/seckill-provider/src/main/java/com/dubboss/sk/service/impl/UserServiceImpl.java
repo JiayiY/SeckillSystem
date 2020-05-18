@@ -3,6 +3,7 @@ package com.dubboss.sk.service.impl;
 import com.dubboss.sk.dao.SkUserMapper;
 import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.exception.GlobalException;
+import com.dubboss.sk.redis.UserKey;
 import com.dubboss.sk.service.UserService;
 import com.dubboss.sk.vo.LoginVo;
 import com.dubboss.sk.redis.SkUserKey;
@@ -62,6 +63,40 @@ public class UserServiceImpl implements UserService {
         }
         return skUser;
     }
+
+    // http://blog.csdn.net/tTU1EvLDeLFq5btqiK/article/details/78693323
+    private boolean updatePassword(String token, Long id, String formPass) {
+        //取user
+        SkUser skUser = getById(id);
+        if (skUser == null) {
+            throw new GlobalException(MOBILE_NOT_EXIST);
+        }
+        //更新数据库
+        SkUser toBeUpdate = new SkUser();
+        toBeUpdate.setId(id);
+        toBeUpdate.setPassword(MD5Util.formPwdToDBPwd(formPass, skUser.getSalt()));
+        skUserMapper.updatePwd(toBeUpdate);
+        //处理缓存
+        redisService.delete(UserKey.getById, "" + id);
+        skUser.setPassword(toBeUpdate.getPassword());
+        redisService.set(SkUserKey.token, token, skUser);
+        return true;
+    }
+
+    private SkUser getById(Long id) {
+        // 取缓存
+        SkUser skUser = redisService.get(UserKey.getById, "" + id, SkUser.class);
+        if (skUser != null) {
+            return skUser;
+        }
+        skUser = skUserMapper.selectByPrimaryKey(id);
+        // 放入缓存
+        if (skUser != null) {
+            redisService.set(UserKey.getById, "" + id, skUser);
+        }
+        return skUser;
+    }
+
 
     /**
      * @param response
