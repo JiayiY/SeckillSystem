@@ -18,5 +18,5 @@ public interface SkGoodsMapper {
 
     int updateByPrimaryKey(SkGoods record);
 
-    void reduceStock(SkGoods skGoods);
+    int reduceStock(SkGoods skGoods);
 }

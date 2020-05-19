@@ -53,10 +53,11 @@ public class OrderServiceImpl implements OrderService {
         orderInfo.setStatus((byte) 0);
         orderInfo.setGoodsName(goodsVo.getGoodsName());
         orderInfo.setUserId(skUser.getId());
-        Long orderId = orderInfoMapper.insert(orderInfo);
+        // mybatis 把返回值放到对象中
+        orderInfoMapper.insert(orderInfo);
         SkOrder skOrder = new SkOrder();
         skOrder.setGoodsId(goodsVo.getId());
-        skOrder.setOrderId(orderId);
+        skOrder.setOrderId(orderInfo.getId());
         skOrder.setUserId(skUser.getId());
         skOrderMapper.insert(skOrder);
         redisService.set(OrderKey.getSkOrderByUidGid,""+skUser.getId()+goodsVo.getId(),skOrder);

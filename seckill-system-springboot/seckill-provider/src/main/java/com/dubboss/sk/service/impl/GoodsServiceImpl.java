@@ -40,7 +40,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public void reduceStock(SkGoods skGoods) {
-        skGoodsMapper.reduceStock(skGoods);
+    public boolean reduceStock(SkGoods skGoods) {
+       int res =  skGoodsMapper.reduceStock(skGoods);
+       return res > 0;
     }
 }

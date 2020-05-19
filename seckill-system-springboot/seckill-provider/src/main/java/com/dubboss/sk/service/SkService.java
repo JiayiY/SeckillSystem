@@ -13,4 +13,7 @@ import com.dubboss.sk.vo.GoodsVo;
  **/
 public interface SkService {
     OrderInfo sk(SkUser skUser, GoodsVo goodsVo);
+
+    long getSkResult(Long uId, long goodsId);
+
 }
