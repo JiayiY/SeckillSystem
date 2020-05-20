@@ -4,6 +4,8 @@ import com.dubboss.sk.entity.OrderInfo;
 import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.vo.GoodsVo;
 
+import java.awt.image.BufferedImage;
+
 /**
  * @ClassName SkService
  * @Description TODO
@@ -16,4 +18,11 @@ public interface SkService {
 
     long getSkResult(Long uId, long goodsId);
 
+    boolean checkPath(SkUser skUser, long goodsId, String path);
+
+    String createSkPath(SkUser skUser, long goodsId);
+
+    BufferedImage createVerifyCode(SkUser skUser, long goodsId);
+
+    boolean checkVerifyCode(SkUser skUser, long goodsId, int verifyCode);
 }

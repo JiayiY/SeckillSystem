@@ -8,10 +8,13 @@ import com.dubboss.sk.enums.ResultStatus;
 import com.dubboss.sk.rabbitmq.MQSender;
 import com.dubboss.sk.rabbitmq.SkMessage;
 import com.dubboss.sk.redis.GoodsKey;
+import com.dubboss.sk.redis.SkKey;
 import com.dubboss.sk.service.GoodsService;
 import com.dubboss.sk.service.OrderService;
 import com.dubboss.sk.service.SkService;
 import com.dubboss.sk.service.impl.RedisService;
+import com.dubboss.sk.util.MD5Util;
+import com.dubboss.sk.util.UUIDUtil;
 import com.dubboss.sk.vo.GoodsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +22,16 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.dubboss.sk.enums.ResultStatus.EXCEPTION;
-import static com.dubboss.sk.enums.ResultStatus.MIAO_SHA_OVER;
+import static com.dubboss.sk.enums.ResultStatus.*;
 
 /**
  * @ClassName SkController
@@ -87,13 +91,20 @@ public class SkController implements InitializingBean {
         return result;
     }*/
 
-    @RequestMapping(value = "/do_miaosha")
+    @RequestMapping(value = "{path}/do_miaosha")
     @ResponseBody
-    public ResultSk<Integer> miaosha(Model model, SkUser skUser, @RequestParam("goodsId") long goodsId) {
+    public ResultSk<Integer> miaosha(Model model, SkUser skUser, @RequestParam("goodsId") long goodsId, @PathVariable("path") String path) {
         ResultSk<Integer> result = ResultSk.build();
         model.addAttribute("user", skUser);
         if (skUser == null) {
             result.withError(ResultStatus.SESSION_ERROR.getCode(), ResultStatus.SESSION_ERROR.getMessage());
+            return result;
+        }
+
+        //验证path
+        boolean check = skService.checkPath(skUser, goodsId, path);
+        if (!check) {
+            result.withError(REQUEST_ILLEGAL.getCode(), REQUEST_ILLEGAL.getMessage());
             return result;
         }
 
@@ -105,16 +116,16 @@ public class SkController implements InitializingBean {
         }
 
         // 预减库存
-        Long stock = redisService.decr(GoodsKey.getSkGoodsStock, ""+goodsId);
-        if(stock<0){
+        Long stock = redisService.decr(GoodsKey.getSkGoodsStock, "" + goodsId);
+        if (stock < 0) {
             localOverMap.put(goodsId, true);
             result.withError(MIAO_SHA_OVER.getCode(), ResultStatus.SESSION_ERROR.getMessage());
             return result;
         }
 
         // 判断是否已经秒杀到了
-        SkOrder skOrder = orderService.getSkOrderByUIdGId(skUser.getId(),goodsId);
-        if(skOrder!=null){
+        SkOrder skOrder = orderService.getSkOrderByUIdGId(skUser.getId(), goodsId);
+        if (skOrder != null) {
             result.withError(EXCEPTION.getCode(), ResultStatus.REPEATE_MIAOSHA.getMessage());
             return result;
         }
@@ -130,13 +141,13 @@ public class SkController implements InitializingBean {
     }
 
     /**
-     * @Author yangjiayi
-     * @Description // 前端轮询 orderId:成功 -1:库存不足 0:排队中
-     * @Date 22:53 2020/5/19
      * @param model
      * @param skUser
      * @param goodsId
      * @return com.dubboss.sk.enums.ResultSk<java.lang.Integer>
+     * @Author yangjiayi
+     * @Description // 前端轮询 orderId:成功 -1:库存不足 0:排队中
+     * @Date 22:53 2020/5/19
      */
     @RequestMapping(value = "result")
     @ResponseBody
@@ -147,9 +158,53 @@ public class SkController implements InitializingBean {
             result.withError(ResultStatus.SESSION_ERROR.getCode(), ResultStatus.SESSION_ERROR.getMessage());
             return result;
         }
-        Long orderId = skService.getSkResult(skUser.getId(),goodsId);
+        Long orderId = skService.getSkResult(skUser.getId(), goodsId);
         result.setData(orderId);
         return result;
+    }
+
+
+    @RequestMapping(value = "path")
+    @ResponseBody
+    public ResultSk<String> skPath(Model model, SkUser skUser, @RequestParam("goodsId") long goodsId, @RequestParam(value = "verifyCode", defaultValue = "0") int verifyCode) {
+        ResultSk<String> result = ResultSk.build();
+        model.addAttribute("user", skUser);
+        if (skUser == null) {
+            result.withError(ResultStatus.SESSION_ERROR.getCode(), ResultStatus.SESSION_ERROR.getMessage());
+            return result;
+        }
+        boolean check = skService.checkVerifyCode(skUser, goodsId, verifyCode);
+        if (!check) {
+            result.withError(REQUEST_ILLEGAL.getCode(), REQUEST_ILLEGAL.getMessage());
+            return result;
+        }
+        String path = skService.createSkPath(skUser, goodsId);
+        result.setData(path);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultSk<String> getMiaoshaVerifyCod(HttpServletResponse response, SkUser skUser,
+                                                @RequestParam("goodsId") long goodsId) {
+        ResultSk<String> result = ResultSk.build();
+        if (skUser == null) {
+            result.withError(SESSION_ERROR.getCode(), SESSION_ERROR.getMessage());
+            return result;
+        }
+        try {
+            BufferedImage image = skService.createVerifyCode(skUser, goodsId);
+            OutputStream out = response.getOutputStream();
+            ImageIO.write(image, "JPEG", out);
+            out.flush();
+            out.close();
+            return result;
+        } catch (Exception e) {
+            logger.error("生成验证码错误-----goodsId:{}", goodsId, e);
+            result.withError(MIAOSHA_FAIL.getCode(), MIAOSHA_FAIL.getMessage());
+            return result;
+        }
     }
 
     @Override

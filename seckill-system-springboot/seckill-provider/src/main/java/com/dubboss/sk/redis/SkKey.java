@@ -8,10 +8,12 @@ package com.dubboss.sk.redis;
  * @Vertion 1.0
  **/
 public class SkKey extends BasePrefix{
-    public SkKey(String prefix) {
-        super(prefix);
+    public SkKey(int expireSeconds,String prefix) {
+        super(expireSeconds,prefix);
     }
 
-    public static SkKey isGoodsOver = new SkKey("go");
+    public static SkKey isGoodsOver = new SkKey(0,"go");
+    public static SkKey getSkPath = new SkKey(60,"skp");
 
+    public static SkKey getMiaoshaVerifyCode = new SkKey(300, "vc");
 }

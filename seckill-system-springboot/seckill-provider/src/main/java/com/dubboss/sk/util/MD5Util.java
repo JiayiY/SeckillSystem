@@ -12,7 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 public class MD5Util {
     private static final String salt = "1a2b3c4d";
 
-    private static String md5(String str) {
+    public static String md5(String str) {
         return DigestUtils.md5Hex(str);
     }
 
