@@ -1,6 +1,6 @@
 package com.dubboss.sk.controller;
 
-import com.dubboss.sk.entity.OrderInfo;
+import com.dubboss.sk.access.AccessLimit;
 import com.dubboss.sk.entity.SkOrder;
 import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.enums.ResultSk;
@@ -8,13 +8,10 @@ import com.dubboss.sk.enums.ResultStatus;
 import com.dubboss.sk.rabbitmq.MQSender;
 import com.dubboss.sk.rabbitmq.SkMessage;
 import com.dubboss.sk.redis.GoodsKey;
-import com.dubboss.sk.redis.SkKey;
 import com.dubboss.sk.service.GoodsService;
 import com.dubboss.sk.service.OrderService;
 import com.dubboss.sk.service.SkService;
 import com.dubboss.sk.service.impl.RedisService;
-import com.dubboss.sk.util.MD5Util;
-import com.dubboss.sk.util.UUIDUtil;
 import com.dubboss.sk.vo.GoodsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,6 +161,7 @@ public class SkController implements InitializingBean {
     }
 
 
+    @AccessLimit(seconds = 5, maxCount = 5, needLogin = true)
     @RequestMapping(value = "path")
     @ResponseBody
     public ResultSk<String> skPath(Model model, SkUser skUser, @RequestParam("goodsId") long goodsId, @RequestParam(value = "verifyCode", defaultValue = "0") int verifyCode) {

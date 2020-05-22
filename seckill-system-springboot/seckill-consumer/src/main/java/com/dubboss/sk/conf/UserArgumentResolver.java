@@ -1,5 +1,6 @@
 package com.dubboss.sk.conf;
 
+import com.dubboss.sk.access.UserContext;
 import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
-    @Autowired
-    private UserService userService;
-
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         Class<?> clazz = methodParameter.getParameterType();
@@ -36,30 +34,8 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        HttpServletResponse httpServletResponse = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
-        HttpServletRequest httpServletRequest = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-        String paramToken = httpServletRequest.getParameter(UserService.COOKIE_NAME_TOKEN);
-        String cookieToken = getCookieValue(httpServletRequest, UserService.COOKIE_NAME_TOKEN);
-        if (StringUtils.isEmpty(paramToken) && StringUtils.isEmpty(cookieToken)) {
-            return null;
-        }
-        // 优先取 paramcookie
-        String token = StringUtils.isEmpty(paramToken) ? cookieToken : paramToken;
-        SkUser skUser = userService.getByToken(httpServletResponse, token);
-        return skUser;
+        return UserContext.getUser();
     }
 
-    private String getCookieValue(HttpServletRequest httpServletRequest, String cookieNameToken) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        if (cookies == null || cookies.length <= 0) {
-            return null;
-        }
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(cookieNameToken)) {
-                return cookie.getValue();
-            }
-        }
-        return null;
-    }
 
 }
