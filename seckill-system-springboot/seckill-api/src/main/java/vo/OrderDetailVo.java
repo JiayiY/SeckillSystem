@@ -1,7 +1,6 @@
-package com.dubboss.sk.vo;
+package vo;
 
 import com.dubboss.sk.entity.OrderInfo;
-import com.dubboss.sk.entity.SkUser;
 
 /**
  * @ClassName OrderDetailVo

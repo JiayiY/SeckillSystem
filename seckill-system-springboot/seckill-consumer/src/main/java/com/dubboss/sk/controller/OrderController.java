@@ -1,19 +1,19 @@
 package com.dubboss.sk.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.dubboss.sk.entity.OrderInfo;
 import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.enums.ResultSk;
 import com.dubboss.sk.enums.ResultStatus;
-import com.dubboss.sk.service.GoodsService;
-import com.dubboss.sk.service.OrderService;
-import com.dubboss.sk.vo.GoodsVo;
-import com.dubboss.sk.vo.OrderDetailVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import service.GoodsService;
+import service.OrderService;
+import vo.GoodsVo;
+import vo.OrderDetailVo;
 
 /**
  * @ClassName OrderController
@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/order")
 public class OrderController {
 
-    @Autowired
+    @Reference
     private GoodsService goodsService;
 
-    @Autowired
+    @Reference
     private OrderService orderService;
 
     @RequestMapping("/detail")

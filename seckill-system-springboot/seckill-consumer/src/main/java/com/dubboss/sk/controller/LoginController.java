@@ -1,14 +1,15 @@
 package com.dubboss.sk.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.dubboss.sk.enums.ResultSk;
-import com.dubboss.sk.service.UserService;
-import com.dubboss.sk.vo.LoginVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import service.UserService;
+import vo.LoginVo;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -26,7 +27,7 @@ public class LoginController {
 
     Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired
+    @Reference
     private UserService userService;
 
     @RequestMapping("/to_login")

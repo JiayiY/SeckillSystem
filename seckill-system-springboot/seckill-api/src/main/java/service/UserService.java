@@ -1,7 +1,7 @@
-package com.dubboss.sk.service;
+package service;
 
 import com.dubboss.sk.entity.SkUser;
-import com.dubboss.sk.vo.LoginVo;
+import vo.LoginVo;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,5 +26,5 @@ public interface UserService {
      */
     boolean login(HttpServletResponse response, LoginVo loginVo);
 
-    SkUser getByToken(HttpServletResponse response,String token);
+    SkUser getByToken(HttpServletResponse response, String token);
 }

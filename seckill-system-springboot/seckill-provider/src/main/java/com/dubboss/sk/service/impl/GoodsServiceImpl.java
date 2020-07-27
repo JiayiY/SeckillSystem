@@ -1,14 +1,13 @@
 package com.dubboss.sk.service.impl;
 
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.dubboss.sk.dao.GoodsMapper;
 import com.dubboss.sk.dao.SkGoodsMapper;
-import com.dubboss.sk.entity.Goods;
 import com.dubboss.sk.entity.SkGoods;
-import com.dubboss.sk.service.GoodsService;
-import com.dubboss.sk.vo.GoodsVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import service.GoodsService;
+import vo.GoodsVo;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,6 +20,7 @@ import java.util.List;
  * @Vertion 1.0
  **/
 @Service
+@Component
 public class GoodsServiceImpl implements GoodsService {
 
     @Resource

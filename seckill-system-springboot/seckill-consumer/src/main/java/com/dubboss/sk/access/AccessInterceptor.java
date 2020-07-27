@@ -5,13 +5,13 @@ import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.enums.ResultSk;
 import com.dubboss.sk.enums.ResultStatus;
 import com.dubboss.sk.redis.AccessKey;
-import com.dubboss.sk.service.UserService;
 import com.dubboss.sk.service.impl.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.HandlerMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import service.UserService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

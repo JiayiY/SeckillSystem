@@ -11,7 +11,7 @@
         <result column="goods_detail" jdbcType="LONGVARCHAR" property="goodsDetail"/>
     </resultMap>
 
-    <resultMap id="GoodsVotMap" type="com.dubboss.sk.vo.GoodsVo">
+    <resultMap id="GoodsVotMap" type="vo.GoodsVo">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
         <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle"/>

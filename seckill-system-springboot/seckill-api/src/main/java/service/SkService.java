@@ -1,8 +1,8 @@
-package com.dubboss.sk.service;
+package service;
 
 import com.dubboss.sk.entity.OrderInfo;
 import com.dubboss.sk.entity.SkUser;
-import com.dubboss.sk.vo.GoodsVo;
+import vo.GoodsVo;
 
 import java.awt.image.BufferedImage;
 

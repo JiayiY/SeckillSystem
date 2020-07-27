@@ -7,12 +7,6 @@
         <groupId>com.dubboss</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <!--<parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.7.RELEASE</version>
-        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;
-    </parent>-->
     <artifactId>seckill-provider</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>seckill-provider</name>
@@ -45,16 +39,6 @@
             <groupId>com.dubboss</groupId>
             <artifactId>seckill-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -103,6 +87,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
             <version>2.3.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dubboss</groupId>
+            <artifactId>seckill-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.spring.boot</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
         </dependency>
     </dependencies>
 

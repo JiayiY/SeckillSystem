@@ -1,4 +1,4 @@
-package com.dubboss.sk.vo;
+package vo;
 
 import com.dubboss.sk.entity.Goods;
 

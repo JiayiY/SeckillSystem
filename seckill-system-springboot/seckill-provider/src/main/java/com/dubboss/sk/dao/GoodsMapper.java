@@ -1,8 +1,8 @@
 package com.dubboss.sk.dao;
 
 import com.dubboss.sk.entity.Goods;
-import com.dubboss.sk.vo.GoodsVo;
 import org.apache.ibatis.annotations.Mapper;
+import vo.GoodsVo;
 
 import java.util.List;
 

@@ -1,16 +1,17 @@
 package com.dubboss.sk.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.dubboss.sk.dao.SkUserMapper;
 import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.exception.GlobalException;
-import com.dubboss.sk.redis.UserKey;
-import com.dubboss.sk.service.UserService;
-import com.dubboss.sk.vo.LoginVo;
 import com.dubboss.sk.redis.SkUserKey;
+import com.dubboss.sk.redis.UserKey;
 import com.dubboss.sk.util.MD5Util;
 import com.dubboss.sk.util.UUIDUtil;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+import service.UserService;
+import vo.LoginVo;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -26,6 +27,7 @@ import static com.dubboss.sk.enums.ResultStatus.*;
  * @Vertion 1.0
  **/
 @Service
+@Component
 public class UserServiceImpl implements UserService {
 
     private static final String COOKIE_NAME_TOKEN = "token";

@@ -1,19 +1,20 @@
 package com.dubboss.sk.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.dubboss.sk.entity.OrderInfo;
 import com.dubboss.sk.entity.SkGoods;
 import com.dubboss.sk.entity.SkOrder;
 import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.redis.SkKey;
-import com.dubboss.sk.service.GoodsService;
-import com.dubboss.sk.service.OrderService;
-import com.dubboss.sk.service.SkService;
 import com.dubboss.sk.util.MD5Util;
 import com.dubboss.sk.util.UUIDUtil;
-import com.dubboss.sk.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import service.GoodsService;
+import service.OrderService;
+import service.SkService;
+import vo.GoodsVo;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -28,7 +29,8 @@ import java.util.Random;
  * @Date 2020/5/16 20:26
  * @Vertion 1.0
  **/
-@Service
+@Service(interfaceClass = SkService.class)
+@Component
 public class SkServiceImpl implements SkService {
 
     /**

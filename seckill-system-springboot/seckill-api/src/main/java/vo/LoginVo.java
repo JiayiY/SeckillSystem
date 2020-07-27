@@ -1,4 +1,4 @@
-package com.dubboss.sk.vo;
+package vo;
 
 import com.dubboss.sk.validator.IsMobile;
 import org.hibernate.validator.constraints.Length;

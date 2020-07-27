@@ -1,5 +1,6 @@
 package com.dubboss.sk.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.dubboss.sk.access.AccessLimit;
 import com.dubboss.sk.entity.SkOrder;
 import com.dubboss.sk.entity.SkUser;
@@ -8,11 +9,8 @@ import com.dubboss.sk.enums.ResultStatus;
 import com.dubboss.sk.rabbitmq.MQSender;
 import com.dubboss.sk.rabbitmq.SkMessage;
 import com.dubboss.sk.redis.GoodsKey;
-import com.dubboss.sk.service.GoodsService;
-import com.dubboss.sk.service.OrderService;
-import com.dubboss.sk.service.SkService;
 import com.dubboss.sk.service.impl.RedisService;
-import com.dubboss.sk.vo.GoodsVo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -20,6 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import service.GoodsService;
+import service.OrderService;
+import service.SkService;
+import vo.GoodsVo;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -45,13 +47,13 @@ public class SkController implements InitializingBean {
     @Autowired
     RedisService redisService;
 
-    @Autowired
+    @Reference
     GoodsService goodsService;
 
-    @Autowired
+    @Reference
     OrderService orderService;
 
-    @Autowired
+    @Reference
     SkService skService;
 
     @Autowired

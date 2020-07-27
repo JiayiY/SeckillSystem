@@ -1,8 +1,8 @@
-package com.dubboss.sk.service;
+package service;
 
-import com.dubboss.sk.entity.Goods;
+
 import com.dubboss.sk.entity.SkGoods;
-import com.dubboss.sk.vo.GoodsVo;
+import vo.GoodsVo;
 
 import java.util.List;
 

@@ -1,17 +1,19 @@
 package com.dubboss.sk.controller;
 
+
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.dubboss.sk.entity.SkUser;
 import com.dubboss.sk.enums.ResultSk;
-import com.dubboss.sk.service.GoodsService;
-import com.dubboss.sk.service.UserService;
-import com.dubboss.sk.vo.GoodsDetailVo;
-import com.dubboss.sk.vo.GoodsVo;
-import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import service.GoodsService;
+import service.UserService;
+import vo.GoodsDetailVo;
+import vo.GoodsVo;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -25,10 +27,10 @@ import java.util.List;
 @RequestMapping("goods")
 public class GoodsController {
 
-    @Resource
+    @Reference
     private UserService userService;
 
-    @Resource
+    @Reference
     private GoodsService goodsService;
 
 /*    @GetMapping("to_list")

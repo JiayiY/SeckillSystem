@@ -3,17 +3,16 @@ package com.dubboss.sk.rabbitmq;
 
 import com.dubboss.sk.entity.SkOrder;
 import com.dubboss.sk.entity.SkUser;
-import com.dubboss.sk.enums.ResultStatus;
-import com.dubboss.sk.service.GoodsService;
-import com.dubboss.sk.service.OrderService;
-import com.dubboss.sk.service.SkService;
 import com.dubboss.sk.service.impl.RedisService;
-import com.dubboss.sk.vo.GoodsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import service.GoodsService;
+import service.OrderService;
+import service.SkService;
+import vo.GoodsVo;
 
 @Service
 public class MQReceiver {
