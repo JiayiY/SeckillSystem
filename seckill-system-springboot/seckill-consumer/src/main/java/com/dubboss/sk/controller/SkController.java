@@ -9,6 +9,7 @@ import com.dubboss.sk.enums.ResultStatus;
 import com.dubboss.sk.rabbitmq.MQSender;
 import com.dubboss.sk.rabbitmq.SkMessage;
 import com.dubboss.sk.redis.GoodsKey;
+import com.dubboss.sk.redis.lua.RedisLimitRateWithLua;
 import com.dubboss.sk.service.impl.RedisService;
 
 import org.slf4j.Logger;
@@ -26,7 +27,9 @@ import vo.GoodsVo;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -104,6 +107,14 @@ public class SkController implements InitializingBean {
         boolean check = skService.checkPath(skUser, goodsId, path);
         if (!check) {
             result.withError(REQUEST_ILLEGAL.getCode(), REQUEST_ILLEGAL.getMessage());
+            return result;
+        }
+
+        // 分布式限流
+        try {
+            RedisLimitRateWithLua.acquire();
+        } catch (IOException | URISyntaxException e) {
+            result.withError(EXCEPTION.getCode(), REPEATE_MIAOSHA.getMessage());
             return result;
         }
 
