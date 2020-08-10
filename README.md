@@ -151,7 +151,7 @@ public static boolean acquire() throws IOException, URISyntaxException{
 
 ## 单用户限制接口请求频率
 
-[采用拦截器实现](seckill-system-springboot/doc/problems.md)
+[采用拦截器实现](seckill-system-springboot/doc/AccessLimit.md)
 
 ## 缓存与数据库的双写一致性
 
