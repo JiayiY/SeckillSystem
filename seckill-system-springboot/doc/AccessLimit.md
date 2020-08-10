@@ -63,12 +63,105 @@ public abstract class HandlerInterceptorAdapter implements AsyncHandlerIntercept
 }
 ```
 
+![正常流程](../assets/normal.png)
+
+
+
+![异常中断流程](../assets/abnormal.png)
+
 运行流程总结如下：
 
 1、拦截器执行顺序是按照Spring配置文件中定义的顺序而定的；
 
-2、会先按照顺序执行所有拦截器的preHandle方法，一直遇到return false为止，比如第二个preHandle方法是return false，则第三个以及以后所有拦截器都不会执行。若都是return true，则按顺序加载完preHandle方法；
+2、先按照顺序执行所有拦截器的preHandle方法，一直遇到return false为止，return false之后的所有拦截器都不会执行；若都是return true，则按顺序加载完preHandle方法；
 
-3、然后执行主方法（自己的controller接口），若中间抛出异常，则跟return false效果一致，不会继续执行postHandle，只会倒序执行afterCompletion方法；
+3、执行主方法（自己的controller接口），若中间抛出异常，则跟return false效果一致，不会继续执行postHandle，只会倒序执行afterCompletion方法；
 
 4、在主方法执行完业务逻辑（页面还未渲染数据）时，按倒序执行postHandle方法。若第三个拦截器的preHandle方法return false，则会执行第二个和第一个的postHandle方法和afterCompletion（postHandle都执行完才会执行这个，也就是页面渲染完数据后，执行after进行清理工作）方法。（postHandle和afterCompletion都是倒序执行）；
+
+## 项目中的实现
+
+### 声明注解
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface AccessLimit {
+    int seconds();
+    int maxCount();
+    boolean needLogin() default true;
+}
+```
+
+### 重写 HandlerInterceptorAdapter
+
+```java
+@Service
+public class AccessInterceptor extends HandlerInterceptorAdapter {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RedisService redisService;
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (handler instanceof HandlerMethod) {
+            SkUser skUser = getUser(request, response);
+            UserContext.setUser(skUser);
+
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            // 获取注解
+            AccessLimit accessLimit = handlerMethod.getMethodAnnotation(AccessLimit.class);
+            if (accessLimit == null) {
+                return true;
+            }
+            // 获取限流的单位时间
+            int seconds = accessLimit.seconds();
+            // 获取限制的最大请求数
+            int maxCount = accessLimit.maxCount();
+            // 是否需要登录
+            boolean needLogin = accessLimit.needLogin();
+            String key = request.getRequestURI();
+            if (needLogin) {
+                if (skUser == null) {
+                    render(response, ResultStatus.SESSION_ERROR);
+                    return false;
+                }
+                key = key + "_" + skUser.getId();
+            } else {
+                // do nothing
+            }
+
+            AccessKey accessKey = AccessKey.withExpire(seconds);
+            // 从缓存中获取当前请求计数
+            Integer count = redisService.get(accessKey, key, Integer.class);
+            if (count == null) {
+                // 第一次请求
+                redisService.set(accessKey, key, 1);
+            } else if (count < maxCount) {
+                // 小于限制的最大请求数
+                redisService.incr(accessKey, key);
+            } else {
+                // 达到最大请求数
+                render(response, ResultStatus.ACCESS_LIMIT_REACHED);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void render(HttpServletResponse response, ResultStatus resultStatus) throws Exception {
+        response.setContentType("application/json;charset=UTF-8");
+        OutputStream outputStream = response.getOutputStream();
+        String str = JSON.toJSONString(ResultSk.error(resultStatus));
+        outputStream.write(str.getBytes(StandardCharsets.UTF_8));
+        outputStream.flush();
+        outputStream.close();
+    }
+    
+	...
+}
+```
+
